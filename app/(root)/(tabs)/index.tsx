@@ -1,134 +1,93 @@
-import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-  Platform,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import { BlurView } from "expo-blur";
-import { ChevronRight } from "lucide-react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// Get screen dimensions
-const { width, height } = Dimensions.get("window");
-
-export default function Index() {
+const HomePage = () => {
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
+  const navigation = useNavigation();
 
-  useEffect(() => {
-    const getToken = async () => {
-      const storedToken = await AsyncStorage.getItem("session_token");
-      if (!storedToken) {
-        router.replace("/"); // Redirect if not logged in
-      } else {
-        setToken(storedToken);
-      }
-    };
-
-    getToken();
-  }, []);
-
-  const handleNavigation = () => {
+  const handleGetStarted = () => {
+    // Use the route name defined in your navigation stack
     router.push("/login");
-  }; // 300ms delay
+  };
+
   return (
-    <View className="flex-1 bg-white">
-      {/* Gradient Background */}
-      <LinearGradient
-        colors={["#FFFFFF", "#E6F2FF"]}
-        className="absolute left-0 right-0 top-0 bottom-0"
-      />
+    <SafeAreaView className=" h-full">
+      <ScrollView className="flex-1 bg-gradient-to-b from-blue-300 to-white">
+        {/* Header Section */}
+        <View className="bg-white shadow-md px-6 py-4 flex-row justify-center items-center">
+          <Text className="text-2xl font-bold text-center text-blue-600">
+            People's Credit Solution
+          </Text>
+          <Image
+            // source={{ uri: 'https://via.placeholder.com/50' }}
+            className="w-10 h-10 rounded-full"
+          />
+        </View>
 
-      {/* Content Container */}
-      <SafeAreaView className="flex-1 z-10">
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingVertical: height * 0.05,
-            paddingHorizontal: width * 0.05,
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Header Section */}
-          <View className="items-center" style={{ marginTop: height * 0.05 }}>
-            <Text className="text-4xl font-black text-blue-900">
-              PEOPLE'S CREDIT
-            </Text>
-            <Text className="text-2xl font-light text-blue-500 mb-5">
-              SOLUTIONS
-            </Text>
+        {/* Hero Section */}
+        <View className="px-6 py-12 items-center">
+          <Text className="text-4xl font-bold text-gray-800 mb-4 text-center">
+            Welcome to People's Credit Solution
+          </Text>
+          <Text className="text-gray-600 mb-8 text-center">
+            Your trusted partner for financial solutions.
+          </Text>
+        </View>
+
+        {/* Features Section */}
+        <View className="px-6">
+          <Text className="text-2xl font-bold text-gray-800 mb-6">
+            Our Services
+          </Text>
+          <View className="space-y-2">
+            <View className="bg-white p-6 rounded-lg shadow-sm">
+              <Text className="text-lg font-bold text-gray-800">
+                Loan Solutions
+              </Text>
+              <Text className="text-gray-600 mt-2">
+                Get access to quick and affordable loans tailored to your needs.
+              </Text>
+            </View>
+            <View className="bg-white p-6 rounded-lg shadow-sm">
+              <Text className="text-lg font-bold text-gray-800">
+                Credit Repair
+              </Text>
+              <Text className="text-gray-600 mt-2">
+                Improve your credit score with our expert guidance.
+              </Text>
+            </View>
+            <View className="bg-white p-6 rounded-lg shadow-sm">
+              <Text className="text-lg font-bold text-gray-800">
+                Financial Planning
+              </Text>
+              <Text className="text-gray-600 mt-2">
+                Plan your finances effectively with our tools and advice.
+              </Text>
+            </View>
           </View>
-
-          {/* Logo Section with Blur Effect */}
-          <View
-            className="rounded-xl overflow-hidden border border-blue-500 mb-8 self-center"
-            style={{ width: width * 0.7, height: height * 0.3 }}
-          >
-            {Platform.OS === "ios" ? (
-              <BlurView
-                intensity={30}
-                className="flex-1 rounded-xl overflow-hidden"
-              >
-                {/* <Image
-                  source={require("../assets/images/")}
-                  className="w-full h-full rounded-xl"
-                  resizeMode="contain"
-                /> */}
-              </BlurView>
-            ) : (
-              <View className="flex-1 rounded-xl overflow-hidden">
-                <Image
-                  source={require("../../../assets/images/image.png")}
-                  className="w-full h-full rounded-xl"
-                  resizeMode="contain"
-                />
-              </View>
-            )}
-          </View>
-
-          {/* Motivational Text */}
-          <View className="items-center my-5">
-            <Text className="text-2xl font-bold text-blue-900 text-center mb-2">
-              Empowering Your Financial Journey{token}
-            </Text>
-            <Text className="text-base text-blue-500 text-center px-5">
-              Seamless, Secure, and Smart Financial Solutions
-            </Text>
-          </View>
-
+        </View>
+        <View className="px-6 py-2 items-center">
           {/* Get Started Button */}
           <TouchableOpacity
-            className="mt-8"
-            style={{ width: width * 0.7 }}
-            onPress={handleNavigation}
-            activeOpacity={0.7}
+            onPress={handleGetStarted}
+            className="bg-blue-600 px-8 py-3 rounded-lg"
           >
-            <LinearGradient
-              colors={["#2196F3", "#0D47A1"]}
-              className="flex-row items-center justify-between py-4 px-6 rounded-full"
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <Text className="text-white text-lg font-bold">Get Started</Text>
-              <ChevronRight color="white" size={24} />
-            </LinearGradient>
+            <Text className="text-white font-bold text-lg">Get Started</Text>
           </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
+        </View>
 
-      {/* Bottom Wave Decoration */}
-      <View className="absolute bottom-0 left-0 right-0 h-24 bg-transparent">
-        <View className="flex-1 bg-white rounded-t-[50px] shadow-lg shadow-blue-500/30" />
-      </View>
-    </View>
+        {/* Footer Section */}
+        <View className="bg-blue-600 px-6 py-8 mt-8">
+          <Text className="text-white text-center">
+            © 2023 People's Credit Solution. All rights reserved.
+          </Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
+
+export default HomePage;

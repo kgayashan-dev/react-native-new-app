@@ -9,9 +9,11 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router"; // Assuming you're using Expo Router
+const APPAPI_URL = process.env.NATIVEAPI_APP_URL;
 
 const Login = () => {
   const router = useRouter();
@@ -72,7 +74,7 @@ const Login = () => {
       // Make API request with timeout for better error handling
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds timeout
-      const response = await fetch("http://localhost:5093/api/users/login", {
+      const response = await fetch(`http://localhost:5093/api/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
