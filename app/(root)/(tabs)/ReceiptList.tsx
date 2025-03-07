@@ -67,6 +67,20 @@ const MFReceiptList: React.FC = () => {
           due: 0,
         },
         {
+          id: "CK000000012212",
+          name: "Saman Perera",
+          rentalAmount: 100000,
+          payAmount: 20000,
+          due: 0,
+        },
+        {
+          id: "CK000000012212",
+          name: "Saman Perera",
+          rentalAmount: 100000,
+          payAmount: 20000,
+          due: 0,
+        },
+        {
           id: "CK000000012213",
           name: "Kamal Silva",
           rentalAmount: 100000,
@@ -282,7 +296,7 @@ const MFReceiptList: React.FC = () => {
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
-          <View className="bg-white border-t border-gray-200 py-2 px-2 rounded-t-[50] shadow-md">
+          <View className="bg-white border-t border-gray-200 py-2 px-2 rounded-t-[50] ">
             <Text className="text-lg font-semibold text-center text-gray-800 mb-3 ">
               Total Amount
             </Text>
