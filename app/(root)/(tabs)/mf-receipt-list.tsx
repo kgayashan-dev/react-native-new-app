@@ -78,7 +78,7 @@ const MFReceiptList: React.FC = () => {
           id: "CK000000012213",
           name: "Kamal Silva",
           rentalAmount: 100000,
-          due: 0,
+          due: 300000,
         },
         {
           id: "CK000000012214",
@@ -206,7 +206,7 @@ const MFReceiptList: React.FC = () => {
         </View>
         <View className="flex-row justify-between items-center">
           <Text className="text-sm text-gray-600">Due</Text>
-          <Text className="text-sm text-green-600 font-semibold">{item.due}</Text>
+          <Text className="text-sm text-green-600 font-semibold">{item.due.toLocaleString()}</Text>
         </View>
         {item.payAmount !== undefined && (
           <View className="bg-orange-50 rounded mt-2 p-2">

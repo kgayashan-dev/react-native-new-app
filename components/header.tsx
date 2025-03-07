@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
       <StatusBar 
         barStyle="dark-content" 
         backgroundColor="white" 
-        translucent={Platform.OS === 'android'} 
+        translucent={Platform.OS === 'android' } 
       />
       <View 
         style={{ 

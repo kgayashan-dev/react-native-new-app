@@ -21,10 +21,7 @@ const HomePage = () => {
           <Text className="text-2xl font-bold text-center text-blue-600">
             People's Credit Solution
           </Text>
-          <Image
-            // source={{ uri: 'https://via.placeholder.com/50' }}
-            className="w-10 h-10 rounded-full"
-          />
+          <Image className="w-10 h-10 rounded-full" />
         </View>
 
         {/* Hero Section */}
@@ -82,7 +79,7 @@ const HomePage = () => {
         {/* Footer Section */}
         <View className="bg-blue-600 px-6 py-8 mt-8">
           <Text className="text-white text-center">
-            © 2023 People's Credit Solution. All rights reserved.
+            © 2025 People's Credit Solution. All rights reserved.
           </Text>
         </View>
       </ScrollView>
