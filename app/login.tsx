@@ -13,9 +13,13 @@ import {
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router"; // Assuming you're using Expo Router
+import authUtils from "./utils/authUtils";
+
 const APPAPI_URL = process.env.NATIVEAPI_APP_URL;
 
 const Login = () => {
+  const fakeToken = "fake-token-123";
+
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -87,6 +91,8 @@ const Login = () => {
         if (data && data.id) {
           // Store user session
           await AsyncStorage.setItem("userData", JSON.stringify(data));
+          await authUtils.saveUserToken(fakeToken); // Save token to AsyncStorage
+
           // Update status
           setApiStatus("success");
           // Clear any existing errors
@@ -96,8 +102,8 @@ const Login = () => {
         } else {
           // Handle invalid user data format
           setApiStatus("error");
-          setErrorMessage("Invalid response from server");
-          Alert.alert("Login Failed", "Invalid server response");
+          setErrorMessage("Invalid Credentials!");
+          Alert.alert("Login Failed", "Invalid Credentials!");
         }
       } else {
         // Handle different error status codes
@@ -227,7 +233,7 @@ const Login = () => {
 
             {/* Username Input */}
             <View className="bg-gray-100 rounded-xl px-4 py-3">
-              <Text className="text-xs text-gray-500 mb-1">Username</Text>
+              <Text className="text-sm text-gray-500 mb-1">Username</Text>
               <TextInput
                 className="text-gray-800 text-base p-2"
                 value={username}
@@ -242,7 +248,7 @@ const Login = () => {
                 keyboardType="email-address"
               />
               {errors.username ? (
-                <Text className="text-red-500 text-xs mt-1">
+                <Text className="text-red-500 text-sm mt-1">
                   {errors.username}
                 </Text>
               ) : null}
@@ -250,7 +256,7 @@ const Login = () => {
 
             {/* Password Input */}
             <View className="bg-gray-100 rounded-xl px-4 py-3">
-              <Text className="text-xs text-gray-500 mb-1">Password</Text>
+              <Text className="text-sm text-gray-500 mb-1">Password</Text>
               <TextInput
                 className="text-gray-800 text-base p-2"
                 value={password}
@@ -264,7 +270,7 @@ const Login = () => {
                 secureTextEntry
               />
               {errors.password ? (
-                <Text className="text-red-500 text-xs mt-1">
+                <Text className="text-red-500 text-sm mt-1">
                   {errors.password}
                 </Text>
               ) : null}
@@ -300,7 +306,7 @@ const Login = () => {
           <View className="flex-row justify-center mt-8">
             <Text className="text-gray-600">Don't have an account? </Text>
             <TouchableOpacity onPress={() => router.push("/login")}>
-              <Text className="text-blue-500 font-semibold">Sign Up</Text>­_
+              {/* <Text className="text-blue-500 font-semibold">Sign Up</Text>­­ */}
             </TouchableOpacity>
           </View>
         </View>

@@ -21,7 +21,6 @@ const HomePage = () => {
           <Text className="text-2xl font-bold text-center text-blue-600">
             People's Credit Solution
           </Text>
-          <Image className="w-10 h-10 rounded-full" />
         </View>
 
         {/* Hero Section */}
