@@ -21,7 +21,6 @@ import HeaderComponet from "@/components/HeaderComponent";
 import { useNavigation } from "@react-navigation/native";
 
 const MFReceipt = () => {
-  const navigation = useNavigation(); // Get the navigation prop
   const [cashierBranch, setCashierBranch] = useState("");
   const [loanBranch, setLoanBranch] = useState("");
   const [center, setCenter] = useState("");
