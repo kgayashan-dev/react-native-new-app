@@ -7,8 +7,10 @@ const HeaderComponet = ({
   title,
   onBack,
   logOut,
+  activeLogBtn,
 }: {
   title: string;
+  activeLogBtn: boolean;
   onBack: () => void;
   logOut: () => void;
 }) => (
@@ -20,9 +22,11 @@ const HeaderComponet = ({
       <Text className="text-white font-bold text-lg">{title}</Text>
     </View>
     <TouchableOpacity onPress={logOut}>
-      <View className="bg-white w-10 h-10 rounded-full flex items-center justify-center">
-        <User size={20} color="#2563EB" />
-      </View>
+      {activeLogBtn && (
+        <View className="bg-white w-10 h-10 rounded-full flex items-center justify-center">
+          <User size={20} color="#2563EB" />
+        </View>
+      )}
     </TouchableOpacity>
   </View>
 );

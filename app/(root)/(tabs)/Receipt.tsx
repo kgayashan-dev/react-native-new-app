@@ -94,7 +94,7 @@ const MFReceipt = () => {
       { text: "Cancel", style: "cancel" },
       { text: "Yes", onPress: () => router.replace("/") }, // Adjust the route
     ]);
-    router.replace("/mf-receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
+    router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
   };
 
   const logOut = async () => {
@@ -146,6 +146,7 @@ const MFReceipt = () => {
           title="MF Receipt"
           onBack={handleBackPress}
           logOut={logOut}
+          activeLogBtn={true}
         />
 
         <ScrollView className="flex-1">

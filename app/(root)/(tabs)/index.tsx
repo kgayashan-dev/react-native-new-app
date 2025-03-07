@@ -1,84 +1,124 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ArrowRight, CreditCard, Award, TrendingUp } from "lucide-react-native";
 
 const HomePage = () => {
   const router = useRouter();
-  const navigation = useNavigation();
 
   const handleGetStarted = () => {
-    // Use the route name defined in your navigation stack
     router.push("/login");
   };
 
   return (
-    <SafeAreaView className=" h-full">
-      <ScrollView className="flex-1 bg-gradient-to-b from-blue-300 to-white">
-        {/* Header Section */}
-        <View className="bg-white shadow-md px-6 py-4 flex-row justify-center items-center">
-          <Text className="text-2xl font-bold text-center text-blue-600">
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView className="flex-1">
+        {/* Header Section with subtle gradient background */}
+        {/* <View className="bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-4 shadow-md"> */}
+        <View className="bg-blue-500 px-6 py-4 shadow-md">
+          <Text className="text-2xl font-bold text-center text-white">
             People's Credit Solution
           </Text>
         </View>
 
-        {/* Hero Section */}
-        <View className="px-6 py-12 items-center">
-          <Text className="text-4xl font-bold text-gray-800 mb-4 text-center">
-            Welcome to People's Credit Solution
-          </Text>
-          <Text className="text-gray-600 mb-8 text-center">
-            Your trusted partner for financial solutions.
-          </Text>
-        </View>
-
-        {/* Features Section */}
-        <View className="px-6">
-          <Text className="text-2xl font-bold text-gray-800 mb-6">
-            Our Services
-          </Text>
-          <View className="space-y-2">
-            <View className="bg-white p-6 rounded-lg shadow-sm">
-              <Text className="text-lg font-bold text-gray-800">
-                Loan Solutions
-              </Text>
-              <Text className="text-gray-600 mt-2">
-                Get access to quick and affordable loans tailored to your needs.
-              </Text>
-            </View>
-            <View className="bg-white p-6 rounded-lg shadow-sm">
-              <Text className="text-lg font-bold text-gray-800">
-                Credit Repair
-              </Text>
-              <Text className="text-gray-600 mt-2">
-                Improve your credit score with our expert guidance.
-              </Text>
-            </View>
-            <View className="bg-white p-6 rounded-lg shadow-sm">
-              <Text className="text-lg font-bold text-gray-800">
-                Financial Planning
-              </Text>
-              <Text className="text-gray-600 mt-2">
-                Plan your finances effectively with our tools and advice.
-              </Text>
-            </View>
+        {/* Hero Section with background image */}
+        <View className="bg-blue-50 px-6 py-10 items-center">
+          <View className="bg-white p-6 rounded-2xl shadow-md w-full mb-4">
+            <Text className="text-3xl font-bold text-gray-800 mb-3 text-center">
+              Financial Freedom Starts Here
+            </Text>
+            <Text className="text-gray-600 text-center text-lg">
+              Your trusted partner for comprehensive credit solutions.
+            </Text>
           </View>
-        </View>
-        <View className="px-6 py-2 items-center">
-          {/* Get Started Button */}
+
+          {/* Call to action button */}
           <TouchableOpacity
             onPress={handleGetStarted}
-            className="bg-blue-600 px-8 py-3 rounded-lg"
+            className="bg-blue-600 px-8 py-4 rounded-full shadow-lg flex-row items-center mt-4"
           >
-            <Text className="text-white font-bold text-lg">Get Started</Text>
+            <Text className="text-white font-bold text-lg mr-2">
+              Get Started
+            </Text>
+            <ArrowRight size={20} color="white" />
           </TouchableOpacity>
         </View>
 
+        {/* Features Section with icons */}
+        <View className="px-6 py-8 bg-white">
+          <Text className="text-2xl font-bold text-gray-800 mb-6">
+            Our Services
+          </Text>
+          <View className="space-y-4">
+            <View className="bg-blue-50 p-6 rounded-xl shadow-sm flex-row items-center">
+              <View className="bg-blue-100 p-3 rounded-full mr-4">
+                <CreditCard size={24} color="#2563EB" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-bold text-gray-800">
+                  Loan Solutions
+                </Text>
+                <Text className="text-gray-600 mt-1">
+                  Quick and affordable loans tailored to your needs.
+                </Text>
+              </View>
+            </View>
+
+            <View className="bg-blue-50 p-6 rounded-xl shadow-sm flex-row items-center">
+              <View className="bg-blue-100 p-3 rounded-full mr-4">
+                <Award size={24} color="#2563EB" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-bold text-gray-800">
+                  Credit Repair
+                </Text>
+                <Text className="text-gray-600 mt-1">
+                  Improve your credit score with our expert guidance.
+                </Text>
+              </View>
+            </View>
+
+            <View className="bg-blue-50 p-6 rounded-xl shadow-sm flex-row items-center">
+              <View className="bg-blue-100 p-3 rounded-full mr-4">
+                <TrendingUp size={24} color="#2563EB" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-bold text-gray-800">
+                  Financial Planning
+                </Text>
+                <Text className="text-gray-600 mt-1">
+                  Plan your finances effectively with our tools and advice.
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Testimonial section */}
+        <View className="px-6 py-8 bg-gray-50">
+          <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            What Our Clients Say
+          </Text>
+          <View className="bg-white p-6 rounded-xl shadow-md">
+            <Text className="text-gray-600 italic text-center">
+              "People's Credit Solution helped me improve my credit score by 150
+              points in just 6 months. Their team was professional and
+              supportive throughout."
+            </Text>
+            <Text className="text-gray-800 font-bold text-center mt-4">
+              - Sarah Johnson
+            </Text>
+          </View>
+        </View>
+
         {/* Footer Section */}
-        <View className="bg-blue-600 px-6 py-8 mt-8">
-          <Text className="text-white text-center">
-            © 2025 People's Credit Solution. All rights reserved.
+        <View className="bg-blue-600  px-6 py-8">
+          <Text className="text-white text-center font-medium">
+            © 2025 People's Credit Solution
+          </Text>
+          <Text className="text-blue-100 text-center text-sm mt-2">
+            All rights reserved
           </Text>
         </View>
       </ScrollView>
