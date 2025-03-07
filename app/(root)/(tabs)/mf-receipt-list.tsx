@@ -11,11 +11,15 @@ import {
   RefreshControl,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
 } from "react-native";
-import { ArrowDown, X } from "lucide-react-native";
-import Header from "@/components/header";
+import * as Linking from "expo-linking";
+import { ChevronDown, ChevronLeft, User } from "lucide-react-native";
+
+import { X } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
+import authUtils from "@/app/utils/authUtils";
+import HeaderComponet from "@/components/HeaderComponent";
 
 // Define types
 type ReceiptItem = {
@@ -27,32 +31,23 @@ type ReceiptItem = {
 };
 
 const MFReceiptList: React.FC = () => {
-  // State for total amount
   const [totalAmount, setTotalAmount] = useState<string>("600000");
-
-  // State for managing modal and pay amount
   const [isPayModalVisible, setPayModalVisible] = useState<boolean>(false);
-  const [selectedReceipt, setSelectedReceipt] = useState<ReceiptItem | null>(null);
+  const [selectedReceipt, setSelectedReceipt] = useState<ReceiptItem | null>(
+    null
+  );
   const [payAmount, setPayAmount] = useState<string>("");
-
-  // Sample receipt data
   const [receiptData, setReceiptData] = useState<ReceiptItem[]>([]);
-  
-  // Loading and error states
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Loading states for specific operations
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isUpdatingPayment, setIsUpdatingPayment] = useState<boolean>(false);
 
-  // Fetch receipt data on component mount
   useEffect(() => {
     fetchReceiptData();
   }, []);
 
-  // Function to fetch receipt data
   const fetchReceiptData = async (isRefresh: boolean = false) => {
     if (isRefresh) {
       setIsRefreshing(true);
@@ -60,12 +55,9 @@ const MFReceiptList: React.FC = () => {
       setIsLoading(true);
     }
     setError(null);
-    
+
     try {
-      // Simulate API call with timeout
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Sample data - replace with actual API call
       const sampleData: ReceiptItem[] = [
         {
           id: "CK000000012212",
@@ -88,7 +80,6 @@ const MFReceiptList: React.FC = () => {
           due: 0,
         },
       ];
-      
       setReceiptData(sampleData);
     } catch (err) {
       const errorMessage = "Failed to load receipt data. Please try again.";
@@ -101,71 +92,55 @@ const MFReceiptList: React.FC = () => {
     }
   };
 
-  // Handle pull-to-refresh
   const handleRefresh = () => {
     fetchReceiptData(true);
   };
 
-  // Handle pay amount entry with error handling
   const handlePayAmountEnter = async () => {
     if (!selectedReceipt) return;
-    
     if (!payAmount || parseFloat(payAmount) <= 0) {
       Alert.alert("Invalid Input", "Please enter a valid payment amount.");
       return;
     }
-    
     setIsUpdatingPayment(true);
-    
+
     try {
-      // Simulate API call with timeout
       await new Promise((resolve) => setTimeout(resolve, 800));
-      
-      // Update the selected receipt's payAmount
       const updatedReceipts = receiptData.map((receipt) =>
         receipt.id === selectedReceipt.id
           ? { ...receipt, payAmount: parseFloat(payAmount) }
           : receipt
       );
-
-      // Update the receipt data
       setReceiptData(updatedReceipts);
-      console.log(`Pay amount entered for ${selectedReceipt.id}: ${payAmount}`);
-      
-      // Close the modal and reset the pay amount
       setPayModalVisible(false);
       setPayAmount("");
       setSelectedReceipt(null);
-      
       Alert.alert("Success", "Payment amount updated successfully.");
     } catch (err) {
-      Alert.alert("Error", "Failed to update payment amount. Please try again.");
+      Alert.alert(
+        "Error",
+        "Failed to update payment amount. Please try again."
+      );
       console.error("Error updating payment:", err);
     } finally {
       setIsUpdatingPayment(false);
     }
   };
 
-  // Handle total amount change
   const handleTotalAmountChange = (text: string) => {
-    // Allow only numeric values
     const numericValue = text.replace(/[^0-9]/g, "");
     setTotalAmount(numericValue);
   };
 
-  // Handle save action with error handling
   const handleSave = async () => {
     if (!totalAmount || parseFloat(totalAmount) <= 0) {
       Alert.alert("Invalid Input", "Please enter a valid total amount.");
       return;
     }
-    
     setIsSaving(true);
-    
+
     try {
-      // Simulate API call with timeout
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
       console.log("Total Amount Saved:", totalAmount);
       Alert.alert("Success", "Total amount saved successfully.");
     } catch (err) {
@@ -176,16 +151,51 @@ const MFReceiptList: React.FC = () => {
     }
   };
 
-  // Render empty state
+  // check the user is logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = await authUtils.getUserToken();
+      if (!token) {
+        router.push("/login");
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+
+  const handleBackPress = () => {
+    Alert.alert("Confirm", "Are you sure you want to go back?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Yes", onPress: () => router.replace("/") }, // Adjust the route
+    ]);
+    router.replace("/mf-receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
+  };
+
+  const logOut = async () => {
+    Alert.alert("Confirm", "Are you sure you want to log out?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Yes",
+        onPress: async () => {
+          await authUtils.removeUserToken();
+        },
+      },
+    ]);
+    await authUtils.removeUserToken(); // these are not mandatory/ Reset the route as the developer uses web browser
+    router.replace("/"); // // these are not mandatory/ Reset the route as the developer uses web browser
+  };
+
   const renderEmptyList = () => (
     <View className="flex-1 items-center justify-center p-5">
-      <Text className="text-gray-600 text-lg text-center">No receipt data available.</Text>
+      <Text className="text-gray-600 text-lg text-center">
+        No receipt data available.
+      </Text>
     </View>
   );
 
-  // Render receipt item
   const renderReceiptItem = ({ item }: { item: ReceiptItem }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden mb-3"
       onPress={() => {
         setSelectedReceipt(item);
@@ -206,11 +216,13 @@ const MFReceiptList: React.FC = () => {
         </View>
         <View className="flex-row justify-between items-center">
           <Text className="text-sm text-gray-600">Due</Text>
-          <Text className="text-sm text-green-600 font-semibold">{item.due.toLocaleString()}</Text>
+          <Text className="text-sm text-green-600 font-semibold">
+            {item.due.toLocaleString()}
+          </Text>
         </View>
         {item.payAmount !== undefined && (
           <View className="bg-orange-50 rounded mt-2 p-2">
-            <Text className="text-orange-500 text-sm font-semibold text-center">
+            <Text className="text-orange-500 text-xs font-semibold text-center">
               PAY AMT - {item.payAmount.toLocaleString()}
             </Text>
           </View>
@@ -220,19 +232,24 @@ const MFReceiptList: React.FC = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={['bottom']}>
-      <Header title="MF Receipt List" showBackButton={true} />
-      
-      {/* Main content */}
+    <SafeAreaView className="flex-1 bg-gray-50" edges={["bottom"]}>
+      <HeaderComponet
+        title="MF Receipt List"
+        onBack={handleBackPress}
+        logOut={logOut}
+      />
+
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#2563EB" />
-          <Text className="text-gray-600 text-base mt-3">Loading receipts...</Text>
+          <Text className="text-gray-600 text-base mt-3">
+            Loading receipts...
+          </Text>
         </View>
       ) : error ? (
         <View className="flex-1 items-center justify-center p-5">
           <Text className="text-red-600 text-lg text-center mb-5">{error}</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             className="bg-blue-600 py-2 px-5 rounded-md"
             onPress={() => fetchReceiptData()}
             activeOpacity={0.7}
@@ -258,7 +275,6 @@ const MFReceiptList: React.FC = () => {
         />
       )}
 
-      {/* Total Amount Section */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
@@ -277,7 +293,7 @@ const MFReceiptList: React.FC = () => {
               editable={!isSaving}
             />
           </View>
-          <TouchableOpacity 
+          <TouchableOpacity
             className={`py-4 rounded-lg items-center justify-center ${
               isSaving ? "bg-blue-400" : "bg-blue-600"
             }`}
@@ -294,7 +310,6 @@ const MFReceiptList: React.FC = () => {
         </View>
       </KeyboardAvoidingView>
 
-      {/* Pay Amount Modal */}
       <Modal
         visible={isPayModalVisible}
         transparent={true}
@@ -314,7 +329,7 @@ const MFReceiptList: React.FC = () => {
                 Enter Pay Amount
               </Text>
               {!isUpdatingPayment && (
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={() => {
                     setPayModalVisible(false);
                     setSelectedReceipt(null);
@@ -325,11 +340,11 @@ const MFReceiptList: React.FC = () => {
                 </TouchableOpacity>
               )}
             </View>
-            
+
             <Text className="text-sm text-gray-500 mb-3">
               {selectedReceipt ? selectedReceipt.id : ""}
             </Text>
-            
+
             <TextInput
               className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
               placeholder="Enter Pay Amount"
@@ -338,7 +353,7 @@ const MFReceiptList: React.FC = () => {
               onChangeText={(text) => setPayAmount(text.replace(/[^0-9]/g, ""))}
               editable={!isUpdatingPayment}
             />
-            
+
             <TouchableOpacity
               className={`w-full py-3 rounded-md items-center mb-2 ${
                 isUpdatingPayment ? "bg-blue-400" : "bg-blue-600"
@@ -353,7 +368,7 @@ const MFReceiptList: React.FC = () => {
                 <Text className="text-white font-medium">Enter</Text>
               )}
             </TouchableOpacity>
-            
+
             {!isUpdatingPayment && (
               <TouchableOpacity
                 className="w-full py-3 items-center rounded-md"

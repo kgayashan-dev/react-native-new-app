@@ -31,6 +31,7 @@ const MFReceipt = () => {
   const [apiStatus, setApiStatus] = useState("idle");
   const router = useRouter();
 
+  // check the user is logged in
   useEffect(() => {
     const checkAuth = async () => {
       const token = await authUtils.getUserToken();
@@ -91,8 +92,9 @@ const MFReceipt = () => {
   const handleBackPress = () => {
     Alert.alert("Confirm", "Are you sure you want to go back?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: () => router.back() },
+      { text: "Yes", onPress: () => router.replace("/") }, // Adjust the route
     ]);
+    router.replace("/mf-receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
   };
 
   const logOut = async () => {
@@ -102,10 +104,11 @@ const MFReceipt = () => {
         text: "Yes",
         onPress: async () => {
           await authUtils.removeUserToken();
-          router.push("/"); // Ensure `navigation` is passed as a prop or obtained via `useNavigation()`
         },
       },
     ]);
+    await authUtils.removeUserToken(); // these are not mandatory/ Reset the route as the developer uses web browser
+    router.replace("/"); // // these are not mandatory/ Reset the route as the developer uses web browser
   };
 
   const cashierBranches = useMemo(
