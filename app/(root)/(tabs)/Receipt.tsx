@@ -14,21 +14,23 @@ import {
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ChevronDown, ChevronLeft, User, Search } from "lucide-react-native";
+import { Search } from "lucide-react-native";
 import authUtils from "../../utils/authUtils";
 import { useRouter } from "expo-router";
 import HeaderComponet from "@/components/HeaderComponent";
-import { useNavigation } from "@react-navigation/native";
 
 const MFReceipt = () => {
   const [cashierBranch, setCashierBranch] = useState("");
   const [loanBranch, setLoanBranch] = useState("");
   const [center, setCenter] = useState("");
+  const [grp, setGroup] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [errors, setErrors] = useState<{ center?: string; search?: string }>(
-    {}
-  );
-  const [apiStatus, setApiStatus] = useState("idle");
+  const [errors, setErrors] = useState<{
+    center?: string;
+    search?: string;
+    grp?: string;
+  }>({});
+  const [apiStatus, setApiStatus] = useState("idle"); //
   const router = useRouter();
 
   // check the user is logged in
@@ -54,17 +56,20 @@ const MFReceipt = () => {
       }, 1000);
     }
   }, [center]);
-
+  // but, after login to the system user should be able to see the all the feilds as default, automatocally selecteed the values..
   const handleSubmit = () => {
-    const newErrors: { center?: string; search?: string } = {};
+    const newErrors: { center?: string; search?: string; grp?: string } = {};
 
     if (!center) {
       newErrors.center = "Please select a center";
     }
+    if (!grp) {
+      newErrors.center = "Please select a group";
+    }
 
-    // if (!searchQuery.trim()) {
-    //   newErrors.search = "Please enter a username or ID";
-    // }
+    if (!searchQuery.trim()) {
+      newErrors.search = "Please enter a username or ID";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -160,8 +165,8 @@ const MFReceipt = () => {
 
         <ScrollView className="flex-1">
           <View className="p-5">
-            <View className="bg-blue-50 p-4 rounded-lg mb-6">
-              <Text className="text-blue-800 text-sm">
+            <View className="bg-blue-50 p-2 rounded-lg mb-6">
+              <Text className="text-blue-800 text-xs">
                 Select the options below to view available receipts. Start by
                 selecting a center.
               </Text>
@@ -261,20 +266,19 @@ const MFReceipt = () => {
 
             {/* Center Dropdown */}
             <View className="mb-4">
-              <Text className="text-sm font-medium mb-2">Select group</Text>
+              <Text className="text-sm font-medium mb-2">Select Group</Text>
               <Dropdown
-                data={centers}
+                data={groups}
                 labelField="label"
                 valueField="value"
-                placeholder="Select Center"
-                value={center}
+                placeholder="Select Group"
+                value={grp}
                 onChange={(item) => {
                   setCenter(item.value);
-                  if (errors.center)
-                    setErrors({ ...errors, center: undefined });
+                  if (errors.grp) setErrors({ ...errors, grp: undefined });
                 }}
                 renderLeftIcon={() => (
-                  <MaterialIcons name="location-on" size={20} color="gray" />
+                  <MaterialIcons name="group" size={20} color="gray" />
                 )}
                 style={{
                   backgroundColor: "white",
@@ -284,10 +288,8 @@ const MFReceipt = () => {
                   borderColor: errors.center ? "#ef4444" : "#d1d5db",
                 }}
               />
-              {errors.center && (
-                <Text className="text-red-500 text-xs mt-1">
-                  {errors.center}
-                </Text>
+              {errors.grp && (
+                <Text className="text-red-500 text-xs mt-1">{errors.grp}</Text>
               )}
             </View>
 

@@ -199,7 +199,6 @@ const MFReceiptList: React.FC = () => {
     ]);
     await authUtils.removeUserToken(); // these are not mandatory/ Reset the route as the developer uses web browser
     router.replace("/"); // // these are not mandatory/ Reset the route as the developer uses web browser
-    router.reload();
   };
 
   const renderEmptyList = () => (
