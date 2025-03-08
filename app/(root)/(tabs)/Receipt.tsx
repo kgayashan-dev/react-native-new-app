@@ -62,9 +62,9 @@ const MFReceipt = () => {
       newErrors.center = "Please select a center";
     }
 
-    if (!searchQuery.trim()) {
-      newErrors.search = "Please enter a username or ID";
-    }
+    // if (!searchQuery.trim()) {
+    //   newErrors.search = "Please enter a username or ID";
+    // }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -133,6 +133,15 @@ const MFReceipt = () => {
       { label: "Center 2", value: "center2" },
       { label: "Center 3", value: "center3" },
       { label: "Center 4", value: "center4" },
+    ],
+    []
+  );
+  const groups = useMemo(
+    () => [
+      { label: "grp 1", value: "grp1" },
+      { label: "grp 2", value: "grp2" },
+      { label: "grp 3", value: "grp3" },
+      { label: "grp 4", value: "grp4" },
     ],
     []
   );
@@ -250,6 +259,38 @@ const MFReceipt = () => {
               )}
             </View>
 
+            {/* Center Dropdown */}
+            <View className="mb-4">
+              <Text className="text-sm font-medium mb-2">Select group</Text>
+              <Dropdown
+                data={centers}
+                labelField="label"
+                valueField="value"
+                placeholder="Select Center"
+                value={center}
+                onChange={(item) => {
+                  setCenter(item.value);
+                  if (errors.center)
+                    setErrors({ ...errors, center: undefined });
+                }}
+                renderLeftIcon={() => (
+                  <MaterialIcons name="location-on" size={20} color="gray" />
+                )}
+                style={{
+                  backgroundColor: "white",
+                  padding: 10,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: errors.center ? "#ef4444" : "#d1d5db",
+                }}
+              />
+              {errors.center && (
+                <Text className="text-red-500 text-xs mt-1">
+                  {errors.center}
+                </Text>
+              )}
+            </View>
+
             {/* Search Input */}
             <View className="mb-6">
               <Text className="text-sm font-medium mb-2">
@@ -264,11 +305,12 @@ const MFReceipt = () => {
 
                 {/* TextInput */}
                 <TextInput
-                  className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-sm ${
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg text-sm ${
                     errors.search
                       ? "border-red-500 bg-red-50"
                       : "border-gray-300 bg-white"
                   } ${apiStatus === "loading" ? "opacity-70" : "opacity-100"}`}
+                  style={{ lineHeight: 24 }}
                   placeholder="Enter ID or name to search"
                   value={searchQuery}
                   onChangeText={(text) => {

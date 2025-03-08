@@ -60,21 +60,21 @@ const MFReceiptList: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const sampleData: ReceiptItem[] = [
         {
-          id: "CK000000012212",
+          id: "CK00000001222",
           name: "Saman Perera",
           rentalAmount: 100000,
           payAmount: 20000,
           due: 0,
         },
         {
-          id: "CK000000012212",
+          id: "CK0000000124412",
           name: "Saman Perera",
           rentalAmount: 100000,
           payAmount: 20000,
           due: 0,
         },
         {
-          id: "CK000000012212",
+          id: "CK0000r012212",
           name: "Saman Perera",
           rentalAmount: 100000,
           payAmount: 20000,
@@ -184,7 +184,7 @@ const MFReceiptList: React.FC = () => {
     ]);
     router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
     router.back();
-    router.reload(); // this is not mandatory/ Reset the route as the developer uses web browser
+    // router.reload(); // this is not mandatory/ Reset the route as the developer uses web browser
   };
 
   const logOut = async () => {
