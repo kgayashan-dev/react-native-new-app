@@ -183,6 +183,8 @@ const MFReceiptList: React.FC = () => {
       { text: "Yes", onPress: () => router.replace("/") }, // Adjust the route
     ]);
     router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
+    router.back();
+    router.reload(); // this is not mandatory/ Reset the route as the developer uses web browser
   };
 
   const logOut = async () => {
@@ -197,6 +199,7 @@ const MFReceiptList: React.FC = () => {
     ]);
     await authUtils.removeUserToken(); // these are not mandatory/ Reset the route as the developer uses web browser
     router.replace("/"); // // these are not mandatory/ Reset the route as the developer uses web browser
+    router.reload();
   };
 
   const renderEmptyList = () => (
