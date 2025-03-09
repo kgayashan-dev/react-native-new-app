@@ -10,7 +10,6 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
   Alert,
   FlatList,
   Keyboard,
