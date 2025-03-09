@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ArrowRight, CreditCard, Award, TrendingUp } from "lucide-react-native";
+import authUtils from "@/app/utils/authUtils";
 
 const HomePage = () => {
   const router = useRouter();
@@ -10,6 +11,8 @@ const HomePage = () => {
   const handleGetStarted = () => {
     router.push("/login");
   };
+
+ 
 
   return (
     <SafeAreaProvider>

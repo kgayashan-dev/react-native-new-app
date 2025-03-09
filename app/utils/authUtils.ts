@@ -24,6 +24,7 @@ const getUserToken = async () => {
 const removeUserToken = async () => {
   try {
     await AsyncStorage.removeItem("userToken");
+    await AsyncStorage.removeItem("userData");
   } catch (error) {
     console.error("Failed to remove user token", error);
   }

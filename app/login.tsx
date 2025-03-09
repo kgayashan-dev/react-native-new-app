@@ -31,7 +31,7 @@ import HeaderComponet from "@/components/HeaderComponent";
 const APPAPI_URL = process.env.NATIVEAPI_APP_URL;
 
 const Login = () => {
-  const fakeToken = "fake-token-123";
+  const fakeToken = "asdasdkmasckasdiwend2oi3jeo2n3eodi2jwoejn2 ";
   const router = useRouter();
 
   // State management
@@ -109,6 +109,7 @@ const Login = () => {
 
       if (response.ok) {
         // Check if the server returned valid user data
+      
         if (data && data.id) {
           // Store user session
           await AsyncStorage.setItem("userData", JSON.stringify(data));
