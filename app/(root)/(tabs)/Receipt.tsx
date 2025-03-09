@@ -90,6 +90,8 @@ const MFReceipt = () => {
     }
   }, [center]);
 
+
+  
   // Handle form submission
   const handleSubmit = () => {
     const newErrors: { center?: string; search?: string; grp?: string } = {};
@@ -136,11 +138,12 @@ const MFReceipt = () => {
   const handleBackPress = () => {
     Alert.alert("Confirm", "Are you sure you want to go back?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: () => router.replace("/") },
+      { text: "Yes", onPress: () => router.replace("/") }, // Adjust the route
     ]);
+    // router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
+    router.back(); // this is not mandatory/ Reset the route as the developer uses web browser
   };
 
-  // Handle logout
   const logOut = async () => {
     Alert.alert("Confirm", "Are you sure you want to log out?", [
       { text: "Cancel", style: "cancel" },
@@ -148,10 +151,11 @@ const MFReceipt = () => {
         text: "Yes",
         onPress: async () => {
           await authUtils.removeUserToken();
-          router.replace("/");
         },
       },
     ]);
+    await authUtils.removeUserToken(); // these are not mandatory/ Reset the route as the developer uses web browser
+    router.replace("/"); // // these are not mandatory/ Reset the route as the developer uses web browser
   };
 
   // Dropdown data

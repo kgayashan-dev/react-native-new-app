@@ -17,14 +17,14 @@ const HeaderComponet = ({
   <View className="bg-blue-600 flex-row justify-between items-center px-4 py-4 w-full">
     <View className="flex-row items-center">
       <TouchableOpacity onPress={onBack} className="mr-3 p-1 rounded-full">
-        <ChevronLeft size={24} color="white" />
+        <ChevronLeft size={26} color="white" />
       </TouchableOpacity>
       <Text className="text-white font-bold text-lg">{title}</Text>
     </View>
     <TouchableOpacity onPress={logOut}>
       {activeLogBtn && (
         <View className="bg-white w-10 h-10 rounded-full flex items-center justify-center">
-          <User size={20} color="#2563EB" />
+          <User size={24} color="#2563EB" />
         </View>
       )}
     </TouchableOpacity>
