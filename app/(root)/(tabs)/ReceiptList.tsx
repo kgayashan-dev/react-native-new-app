@@ -36,7 +36,7 @@ const MFReceiptList: React.FC = () => {
   const [selectedReceipt, setSelectedReceipt] = useState<ReceiptItem | null>(
     null
   );
-  const [payAmount, setPayAmount] = useState<string>(0);
+  const [payAmount, setPayAmount] = useState<string>("");
   const [receiptData, setReceiptData] = useState<ReceiptItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
