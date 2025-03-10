@@ -17,6 +17,8 @@ import {
 } from "react-native";
 import { Search } from "lucide-react-native";
 import authUtils from "../../utils/authUtils";
+import { useNavigation } from "expo-router";
+
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HeaderComponet from "@/components/HeaderComponent";
@@ -50,12 +52,12 @@ const MFReceipt = () => {
 
   // Current active dropdown
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  
+
   // Search filters
   const [dropdownSearch, setDropdownSearch] = useState("");
 
   const router = useRouter();
-
+  const navigation = useNavigation();
   // Check if user is logged in
   useEffect(() => {
     const checkAuth = async () => {
@@ -90,8 +92,6 @@ const MFReceipt = () => {
     }
   }, [center]);
 
-
-  
   // Handle form submission
   const handleSubmit = () => {
     const newErrors: { center?: string; search?: string; grp?: string } = {};
@@ -138,10 +138,18 @@ const MFReceipt = () => {
   const handleBackPress = () => {
     Alert.alert("Confirm", "Are you sure you want to go back?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: () => router.replace("/") }, // Adjust the route
+      {
+        text: "Yes",
+        onPress: () => {
+          if (router.canGoBack()) {
+            navigation.goBack();
+          } else {
+            router.replace("/"); // Redirect to a default route
+          }
+        },
+      },
     ]);
-    // router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
-    router.back(); // this is not mandatory/ Reset the route as the developer uses web browser
+    navigation.goBack();
   };
 
   const logOut = async () => {
@@ -204,22 +212,22 @@ const MFReceipt = () => {
   // Get dropdown items based on active dropdown
   const getDropdownItems = (): DropdownItem[] => {
     const search = dropdownSearch.toLowerCase();
-    
+
     switch (activeDropdown) {
       case "cashier":
-        return cashierBranches.filter(item => 
+        return cashierBranches.filter((item) =>
           item.label.toLowerCase().includes(search)
         );
       case "loan":
-        return loanBranches.filter(item => 
+        return loanBranches.filter((item) =>
           item.label.toLowerCase().includes(search)
         );
       case "center":
-        return centers.filter(item => 
+        return centers.filter((item) =>
           item.label.toLowerCase().includes(search)
         );
       case "group":
-        return groups.filter(item => 
+        return groups.filter((item) =>
           item.label.toLowerCase().includes(search)
         );
       default:
@@ -249,7 +257,7 @@ const MFReceipt = () => {
         if (errors.grp) setErrors({ ...errors, grp: undefined });
         break;
     }
-    
+
     closeDropdown();
   };
 
@@ -268,16 +276,16 @@ const MFReceipt = () => {
 
   // Render field with selection UI
   const renderSelectField = (
-    label: string, 
-    placeholder: string, 
-    value: string, 
+    label: string,
+    placeholder: string,
+    value: string,
     type: string,
     error?: string
   ) => {
     return (
       <View className="mb-4">
         <Text className="text-sm font-medium mb-2">{label}</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => openDropdown(type)}
           className={`w-full relative border rounded-lg ${
             error ? "border-red-500 bg-red-50" : "border-gray-300 bg-white"
@@ -295,9 +303,7 @@ const MFReceipt = () => {
             {value || placeholder}
           </Text>
         </TouchableOpacity>
-        {error && (
-          <Text className="text-red-500 text-xs mt-1">{error}</Text>
-        )}
+        {error && <Text className="text-red-500 text-xs mt-1">{error}</Text>}
       </View>
     );
   };
@@ -321,8 +327,8 @@ const MFReceipt = () => {
             <View className="p-5">
               <View className="bg-blue-50 p-3 rounded-lg mb-6">
                 <Text className="text-blue-800 text-xs">
-                  Select the options below to view available receipts. Start
-                  by selecting a center.
+                  Select the options below to view available receipts. Start by
+                  selecting a center.
                 </Text>
                 <Text className="text-xs font-semibold mt-1">{userId}</Text>
               </View>
@@ -334,14 +340,14 @@ const MFReceipt = () => {
                 cashierBranchText,
                 "cashier"
               )}
-              
+
               {renderSelectField(
                 "Select Loan Branch",
                 "Search for loan branch",
                 loanBranchText,
                 "loan"
               )}
-              
+
               {renderSelectField(
                 "Select Center",
                 "Search for center",
@@ -349,7 +355,7 @@ const MFReceipt = () => {
                 "center",
                 errors.center
               )}
-              
+
               {renderSelectField(
                 "Select Group",
                 "Search for group",
@@ -425,7 +431,7 @@ const MFReceipt = () => {
             onRequestClose={closeDropdown}
           >
             <TouchableOpacity
-              style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}
+              style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }}
               activeOpacity={1}
               onPress={closeDropdown}
             >
@@ -438,7 +444,7 @@ const MFReceipt = () => {
                     {activeDropdown === "group" && "Select Group"}
                   </Text>
                 </View>
-                
+
                 <View className="p-4">
                   <View className="relative mb-4">
                     <View className="absolute top-0 left-3 h-full flex justify-center items-center">
@@ -452,7 +458,7 @@ const MFReceipt = () => {
                       autoFocus
                     />
                   </View>
-                  
+
                   <FlatList
                     data={getDropdownItems()}
                     keyExtractor={(item) => item.value}
@@ -473,7 +479,7 @@ const MFReceipt = () => {
                     style={{ maxHeight: 300 }}
                   />
                 </View>
-                
+
                 <View className="p-4 border-t border-gray-200">
                   <TouchableOpacity
                     className="py-3 bg-blue-600 rounded-lg items-center"

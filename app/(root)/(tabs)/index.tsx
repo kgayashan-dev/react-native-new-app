@@ -12,8 +12,6 @@ const HomePage = () => {
     router.push("/login");
   };
 
- 
-
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-blue-500 h-full">
@@ -26,7 +24,7 @@ const HomePage = () => {
           {/* <View className="bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-4 shadow-md"> */}
           <View className="bg-blue-500 px-6 py-4 shadow-md">
             <Text className="text-2xl font-bold text-center text-white">
-              People's Credit Solution
+              FINNET DIGITAL
             </Text>
           </View>
 

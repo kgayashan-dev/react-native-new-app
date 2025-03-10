@@ -17,7 +17,7 @@ import { ChevronDown, ChevronLeft, User } from "lucide-react-native";
 
 import { X } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import authUtils from "@/app/utils/authUtils";
 import HeaderComponet from "@/components/HeaderComponent";
 
@@ -36,7 +36,7 @@ const MFReceiptList: React.FC = () => {
   const [selectedReceipt, setSelectedReceipt] = useState<ReceiptItem | null>(
     null
   );
-  const [payAmount, setPayAmount] = useState<string>("");
+  const [payAmount, setPayAmount] = useState<string>(0);
   const [receiptData, setReceiptData] = useState<ReceiptItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -44,6 +44,7 @@ const MFReceiptList: React.FC = () => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isUpdatingPayment, setIsUpdatingPayment] = useState<boolean>(false);
 
+  const navigation = useNavigation();
   useEffect(() => {
     fetchReceiptData();
   }, []);
@@ -180,11 +181,18 @@ const MFReceiptList: React.FC = () => {
   const handleBackPress = () => {
     Alert.alert("Confirm", "Are you sure you want to go back?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: () => router.replace('') }, // Adjust the route
+      {
+        text: "Yes",
+        onPress: () => {
+          if (router.canGoBack()) {
+            navigation.goBack();
+          } else {
+            router.replace("/"); // Redirect to a default route
+          }
+        },
+      },
     ]);
-    // router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
-    router.back();
-  
+    navigation.goBack();
   };
 
   const logOut = async () => {
@@ -238,7 +246,7 @@ const MFReceiptList: React.FC = () => {
         {item.payAmount !== undefined && (
           <View className="bg-orange-50 rounded mt-2 p-2">
             <Text className="text-orange-500 text-sm font-semibold text-center">
-              Paid Amount - {item.payAmount.toLocaleString()}
+              Pay Amount - {item.payAmount.toLocaleString()}
             </Text>
           </View>
         )}
