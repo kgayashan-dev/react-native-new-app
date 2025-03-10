@@ -28,10 +28,10 @@ import {
 import authUtils from "./utils/authUtils";
 import HeaderComponet from "@/components/HeaderComponent";
 
-const APPAPI_URL = process.env.NATIVEAPI_APP_URL;
+import { EXPO_PUBLIC_API_BASE_URL, TOKEN } from "@env";
 
 const Login = () => {
-  const fakeToken = "asdasdkmasckasdiwend2oi3jeo2n3eodi2jwoejn2 ";
+  const fakeToken = process.env.TOKEN;
   const router = useRouter();
 
   // State management
@@ -97,7 +97,7 @@ const Login = () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds timeout
 
-      const response = await fetch(`http://localhost:5093/api/users/login`, {
+      const response = await fetch(`${EXPO_PUBLIC_API_BASE_URL}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -109,11 +109,11 @@ const Login = () => {
 
       if (response.ok) {
         // Check if the server returned valid user data
-      
+
         if (data && data.id) {
           // Store user session
           await AsyncStorage.setItem("userData", JSON.stringify(data));
-          await authUtils.saveUserToken(fakeToken); // Save token to AsyncStorage
+          await authUtils.saveUserToken(TOKEN); // Save token to AsyncStorage
 
           // Update status
           setApiStatus("success");

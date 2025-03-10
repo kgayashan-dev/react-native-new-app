@@ -180,7 +180,7 @@ const MFReceiptList: React.FC = () => {
   const handleBackPress = () => {
     Alert.alert("Confirm", "Are you sure you want to go back?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: () => router.back() }, // Adjust the route
+      { text: "Yes", onPress: () => router.replace('') }, // Adjust the route
     ]);
     // router.replace("/Receipt"); // this is not mandatory/ Reset the route as the developer uses web browser
     router.back();
